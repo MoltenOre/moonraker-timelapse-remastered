@@ -8,6 +8,7 @@ import logging
 import os
 import glob
 import re
+import shlex
 import shutil
 import asyncio
 from datetime import datetime
@@ -283,6 +284,10 @@ class Timelapse:
     async def getWebcam2Config(self) -> None:
         """Fetch configuration for the second camera (dual_camera mode)."""
         if not self.config['dual_camera'] or not self.config['camera2']:
+            self.config['snapshoturl2'] = None
+            self.config['flip_x2'] = False
+            self.config['flip_y2'] = False
+            self.config['rotation2'] = 0
             return
 
         webcam_name = self.config['camera2']
@@ -419,7 +424,9 @@ class Timelapse:
                 'park_custom_pos_y', 'park_custom_pos_dz',
                 'park_travel_speed', 'park_retract_speed',
                 'park_extrude_speed', 'park_retract_distance',
-                'park_extrude_distance', 'park_time', 'fw_retract'
+                'park_extrude_distance', 'park_time', 'fw_retract',
+                'dual_camera', 'camera2',
+                'camera_switch_interval'
             ]
             modechanged = False
 
@@ -513,7 +520,7 @@ class Timelapse:
             + f" PARK_TIME={self.config['park_time']}" \
             + f" FW_RETRACT={self.config['fw_retract']}" \
             + f" DUAL_CAMERA={self.config['dual_camera']}" \
-            + f" DUAL_CAMERA_NAME={self.config['camera2']}" \
+            + f" DUAL_CAMERA_NAME='{str(self.config['camera2']).replace(chr(39), chr(39) + chr(92) + chr(39) + chr(39))}'" \
             + f" CAMERA_SWITCH_INTERVAL={self.config['camera_switch_interval']}"
 
         logging.debug(f"run gcommand: {gcommand}")
@@ -616,8 +623,8 @@ class Timelapse:
         else:
             snapshot_url = self.config['snapshoturl']
 
-        cmd = "wget " + options + snapshot_url \
-              + " -O " + self.temp_dir + framefile
+        cmd = "wget " + options + shlex.quote(snapshot_url) \
+              + " -O " + shlex.quote(self.temp_dir + framefile)
         self.lastframefile = framefile
         logging.debug(f"cmd: {cmd} (camera {active_cam})")
 

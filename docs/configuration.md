@@ -112,9 +112,11 @@ The number of frames between camera switches. Default is 5.
   so a value of 50 means the camera switches every 50 snapshots.
 
 With `camera_switch_interval: 50`, the pattern is:
-| Frames 1-50 | Frames 51-100 | Frames 101-151 |
+
+| Frames 1-50 | Frames 51-100 | Frames 101-150 |
 |-------------|---------------|----------------|
 | Camera 1    | Camera 2      | Camera 1       |
+
 
 Note: If the two cameras have different rotation/flip settings, the component
 will automatically apply per-frame transforms so that all frames are correctly
