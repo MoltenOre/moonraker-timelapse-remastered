@@ -253,7 +253,7 @@ To do so, please refer to the documentation of your Image:
 
 ## Reduce the check interval inside the klipper macros
 The default is that the macros check every 0.5 sec if the print can continue.
-This is a good compromise between cpu load and quality. From now one you can change
+This is a good compromise between cpu load and quality. You can now change
 this time.
 Caution, smaller numbers increase the risk of a klipper "timer to close"
 
