@@ -43,8 +43,8 @@ Advanced Settings -> Gcode -> Layer Change Gcode -> ``TIMELAPSE_TAKE_FRAME``
 [timelapse]
 ##   Following basic configuration is default to most images and don't need
 ##   to be changed in most scenarios. Only uncomment and change it if your
-##   Image differ from standard installations. In most common scenarios 
-##   a User only needs [timelapse] in their configuration.
+##   Images may differ from standard installations. In most common scenarios,
+##   a user only needs [timelapse] in their configuration.
 #output_path: ~/timelapse/
 ##   Directory where the generated video will be saved
 #frame_path: /tmp/timelapse/
