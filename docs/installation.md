@@ -53,7 +53,7 @@ Please see [configuration.md](configuration.md) for details on how to
 configure the timelapse component.
 
 
-## Install gphoto2 if an External camara is to be used like a Nikon D40
+# Install gphoto2 if an External camara is to be used like a Nikon D40
 
 ```bash
 # Debian/Ubuntu/Raspbian
@@ -61,9 +61,9 @@ sudo apt-get update
 sudo apt-get install gphoto2
 ```
 
-# Support for gphoto2
+## Support for gphoto2
 
 For issues:
 1. Check `moonraker.log` for errors
-2. Test gphoto2 manually: `gphoto2 --camera '{Model}}' --capture-image-and-download --filename '/tmp/test_Image000001.jpg'`
+2. Test gphoto2 manually: `gphoto2 --camera '{Model}' --capture-image-and-download --filename '/tmp/test_Image000001.jpg'`
 3. Verify camera compatibility at: http://gphoto.org/proj/libgphoto2/support.php

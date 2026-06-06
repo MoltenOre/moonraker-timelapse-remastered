@@ -269,9 +269,9 @@ To get that change at every klipper start:
 initial_duration: 1
 gcode: SET_GCODE_VARIABLE MACRO=TIMELAPSE_TAKE_FRAME VARIABLE=check_time VALUE=0.5 
 ``` 
-## gphoto2 Configuration
+# gphoto2 Configuration
 
-# Connect Your Camera
+## Connect Your Camera
 
 1. Connect camera via USB
 2. Enable PTP/USB mode on camera (varies by model)
@@ -289,7 +289,7 @@ Model                          Port
 Nikon DSC D40 (PTP mode)       usb:003,004
 ```
 
-# Update Configuration
+## Update Configuration
 
 Add a dummy webcam and give it a stream and snapshot URL that is not in use.
 Select that Camara in the timelaps menue.
@@ -302,7 +302,7 @@ Edit `moonraker.conf`:
 gphoto2_camera_model = Nikon DSC D40 (PTP mode)
 ```
 
-# Camera "Device busy"
+## Camera "Device busy"
 
 ```bash
 # Kill any process using camera
