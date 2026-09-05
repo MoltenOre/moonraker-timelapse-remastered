@@ -64,6 +64,8 @@ class Timelapse:
             "ffmpeg_binary_path", "/usr/bin/ffmpeg")
         self.wget_skip_cert = confighelper.getboolean(
             "wget_skip_cert_check", False)
+        self.wget_timeout = confighelper.getfloat(
+            "wget_timeout", 2.0)
 
         # Setup default config
         self.config: Dict[str, Any] = {
@@ -485,7 +487,7 @@ class Timelapse:
             scmd = shell_cmd.build_shell_command(cmd, None)
 
             try:
-                cmdstatus = await scmd.run(timeout=5., verbose=False)
+                cmdstatus = await scmd.run(timeout=self.wget_timeout, verbose=False)
             except Exception:
                 logging.exception(f"Error executing gphoto2 command: {cmd}")
 
@@ -499,12 +501,12 @@ class Timelapse:
                   + " -O " + self.temp_dir + framefile
             logging.debug(f"cmd: {cmd}")
 
-            shell_cmd: SCMDComp = self.server.lookup_component('shell_command')
-            scmd = shell_cmd.build_shell_command(cmd, None)
-            try:
-                cmdstatus = await scmd.run(timeout=2., verbose=False)
-            except Exception:
-                logging.exception(f"Error running cmd '{cmd}'")
+        shell_cmd: SCMDComp = self.server.lookup_component('shell_command')
+        scmd = shell_cmd.build_shell_command(cmd, None)
+        try:
+            cmdstatus = await scmd.run(timeout=self.wget_timeout, verbose=False)
+        except Exception:
+            logging.exception(f"Error running cmd '{cmd}'")
 
         # Process result
         if cmdstatus:
