@@ -91,7 +91,7 @@ use or render.
 
 #### gcode_after_render
 Specifies an optional G-code macro to run after a render completes successfully.
-The macro is run before `TIMELAPSE_RENDER` resumes the print. Leave this empty
+The macro is run before `TIMELAPSE_RENDER` resumes the print and it is verified that the outputfile exists. Leave this empty
 to disable the hook.
 
 ### Takeframe specific

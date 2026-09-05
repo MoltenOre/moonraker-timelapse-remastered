@@ -643,6 +643,7 @@ class Timelapse:
             logging.info(f"timelapse: {msg}")
         else:
             self.renderisrunning = True
+            render_saved = False
 
             # get printed filename
             kresult = await self.klippy_apis.query_objects(
@@ -756,9 +757,14 @@ class Timelapse:
                 result.pop("settings")
 
                 # move finished output file to output directory
+                output_path = self.out_dir + outfile + ".mp4"
                 try:
                     shutil.move(self.temp_dir + outfile + ".mp4",
-                                self.out_dir + outfile + ".mp4")
+                                output_path)
+                    render_saved = (os.path.isfile(output_path)
+                                    and os.path.getsize(output_path) > 0)
+                    if not render_saved:
+                        logging.info("rendered output file could not be verified")
                 except OSError as err:
                     logging.info(f"moving output file failed: {err}")
 
@@ -771,10 +777,16 @@ class Timelapse:
                         shutil.copy(previewSrc, previewFilePath)
                     except OSError as err:
                         logging.info(f"copying preview image failed: {err}")
+                        render_saved = False
                     else:
-                        result.update({
-                            'previewimage': previewFile
-                        })
+                        if os.path.isfile(previewFilePath):
+                            result.update({
+                                'previewimage': previewFile
+                            })
+                        else:
+                            logging.info(
+                                "preview image could not be verified")
+                            render_saved = False
 
                     # apply rotation previewimage if needed
                     if filterParam or self.config['extraoutputparams']:
@@ -793,8 +805,15 @@ class Timelapse:
                                                        log_complete=False,
                                                        timeout=9999999999,
                                                        )
+                            if not cmdstatus:
+                                render_saved = False
                         except Exception:
                             logging.exception(f"Error running cmd '{cmd}'")
+                            render_saved = False
+
+                if not render_saved:
+                    status = "error"
+                    msg = f"Rendering Video could not be verified: {outfile}.mp4"
 
             else:
                 status = "error"
