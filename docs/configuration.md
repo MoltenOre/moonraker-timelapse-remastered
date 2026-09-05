@@ -89,6 +89,11 @@ frontend) to trigger the render process.
 'True' enables or 'False' disables packing the frames to a zip file for external
 use or render.
 
+#### gcode_after_render
+Specifies an optional G-code macro to run after a render completes successfully.
+The macro is run before `TIMELAPSE_RENDER` resumes the print. Leave this empty
+to disable the hook.
+
 ### Takeframe specific
 
 #### camera
@@ -244,6 +249,7 @@ does.
 #duplicatelastframe: 0
 #previewimage: True
 #saveframes: False
+#gcode_after_render:
 #wget_skip_cert_check: False
 #wget_timeout: 5.0
 #gphoto2_camera_model: Nikon DSC D40 (PTP mode)

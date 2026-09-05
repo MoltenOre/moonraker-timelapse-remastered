@@ -104,7 +104,8 @@ class Timelapse:
             'flip_y': False,
             'duplicatelastframe': 5,
             'previewimage': True,
-            'saveframes': False
+            'saveframes': False,
+            'gcode_after_render': ''
         }
 
         # Get Config from Database and overwrite defaults
@@ -812,6 +813,15 @@ class Timelapse:
                         os.remove(dupe)
                     except OSError as err:
                         logging.info(f"remove duplicate failed: {err}")
+
+            if status == "success" and self.config['gcode_after_render']:
+                gcommand = self.config['gcode_after_render']
+                logging.debug(f"run gcommand: {gcommand}")
+                try:
+                    await self.klippy_apis.run_gcode(gcommand)
+                except self.server.error:
+                    logging.exception(
+                        f"Error executing GCode {gcommand}")
 
         # log and notify ws
         logging.info(msg)
